@@ -1,6 +1,11 @@
 (function() {
      function SongPlayer() {
         var SongPlayer = {};
+        
+        /**
+        * @desc Object containing song data
+        * @type {Object}
+        */ 
          
         var currentSong = null;
          
@@ -23,28 +28,52 @@
                 currentSong.playing = null;
             }
  
-        currentBuzzObject = new buzz.sound(song.audioUrl, {
+            currentBuzzObject = new buzz.sound(song.audioUrl, {
             formats: ['mp3'],
             preload: true
-        });
+            });
  
-        currentSong = song;
-    };
+            currentSong = song;
+        };
+         
+        /**
+        * @function playSong
+        * @desc Plays current Buzz Object and sets to true the playing status of the song
+        * @param {Object} song
+        */
+         
+        var playSong = function(song) {
+            currentBuzzObject.play();
+            song.playing = true;
+            
+        };
+         
+        /**
+        * @function play
+        * @desc Plays the selected song by calling the setSong and playSong functions
+        * @param {Object} song
+        */
          
         SongPlayer.play = function(song) {
              
             if (currentSong !== song) { 
             
-            setSong(song);    
-            currentBuzzObject.play();
-            song.playing = true;
-        } else if (currentSong === song) {
-            if (currentBuzzObject.isPaused()) {
-                currentBuzzObject.play();
+            setSong(song);
+            playSong(song);
+            
+            } else if (currentSong === song) {
+                if (currentBuzzObject.isPaused()) {
+                    currentBuzzObject.play();
             }
         }
     };
-         
+        
+        /**
+        * @function pause
+        * @desc Pauses the selected song
+        * @param {Object} song
+        */
+        
         SongPlayer.pause = function(song) {
             currentBuzzObject.pause();
             song.playing = false;
